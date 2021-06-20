@@ -54,4 +54,32 @@ public class SimpleArrayTest {
         array.add("second");
         it.next();
     }
+
+    @Test
+    public void whenTheArrayExpands() {
+        SimpleArray<Integer> array = new SimpleArray<>();
+        array.add(1);
+        array.add(2);
+        array.add(3);
+        array.add(4);
+        array.add(5);
+        array.add(6);
+        array.add(7);
+        array.add(8);
+        array.add(9);
+        array.add(10);
+        array.add(11);
+        Iterator<Integer> it = array.iterator();
+        assertThat(it.next(), is(1));
+        assertThat(it.next(), is(2));
+        assertThat(it.next(), is(3));
+        assertThat(it.next(), is(4));
+        assertThat(it.next(), is(5));
+        assertThat(it.next(), is(6));
+        assertThat(it.next(), is(7));
+        assertThat(it.next(), is(8));
+        assertThat(it.next(), is(9));
+        assertThat(it.next(), is(10));
+        assertThat(it.next(), is(11));
+    }
 }
