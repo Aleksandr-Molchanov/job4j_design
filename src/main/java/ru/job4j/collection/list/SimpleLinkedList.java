@@ -12,17 +12,16 @@ public class SimpleLinkedList<E> implements List<E> {
     private int modCount = 0;
     private int size = 0;
 
-    public SimpleLinkedList() {
-        lastNode = new Node<E>(null, (E) firstNode, null);
-        firstNode = new Node<E>(null, null, lastNode);
-    }
-
     @Override
     public void add(E value) {
-        Node<E> prevNode = lastNode;
-        prevNode.setItem(value);
-        lastNode = new Node<E>(null, (E) prevNode, null);
-        prevNode.setNext(lastNode);
+        Node<E> l = lastNode;
+        Node<E> newNode = new Node<>(l, value, null);
+        lastNode = newNode;
+        if (l == null) {
+            firstNode = newNode;
+        } else {
+            l.next = newNode;
+        }
         size++;
         modCount++;
     }
@@ -30,7 +29,7 @@ public class SimpleLinkedList<E> implements List<E> {
     @Override
     public E get(int index) {
         Objects.checkIndex(index, size);
-        Node<E> target = firstNode.getNext();
+        Node<E> target = firstNode;
         for (int i = 0; i < index; i++) {
             target = getNextElement(target);
         }
@@ -44,12 +43,12 @@ public class SimpleLinkedList<E> implements List<E> {
     @Override
     public Iterator<E> iterator() {
         return new Iterator<E>() {
-            private int point = 0;
-            private int expectedModCount = modCount;
+            Node<E> node = firstNode;
+            private final int expectedModCount = modCount;
 
             @Override
             public boolean hasNext() {
-                return point < size;
+                return node != null;
             }
 
             @Override
@@ -60,7 +59,9 @@ public class SimpleLinkedList<E> implements List<E> {
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                return get(point++);
+                E value = node.item;
+                node = node.next;
+                return value;
             }
         };
     }
