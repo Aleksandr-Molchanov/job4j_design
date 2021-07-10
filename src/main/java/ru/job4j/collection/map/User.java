@@ -23,6 +23,9 @@ public class User {
         map.put(user2, new Object());
         for (User us : map.keySet()) {
             System.out.println(us);
+            System.out.println("хэш-код объекта = " + us.hashCode());
         }
+        System.out.println("хэш-код объекта = " + user1.hashCode());
+        System.out.println("хэш-код объекта = " + user2.hashCode());
     }
 }
