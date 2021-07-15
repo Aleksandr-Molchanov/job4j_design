@@ -19,10 +19,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean put(K key, V value) {
-        if (count == capacity) {
-            return false;
-        }
-        if (key == null) {
+       if (key == null) {
             table[0] = new MapEntry<>(null, value);
             count++;
             modCount++;
@@ -30,6 +27,9 @@ public class SimpleMap<K, V> implements Map<K, V> {
         }
         int hash = hash(key.hashCode());
         int position = indexFor(hash);
+        if (table[position] != null && !table[position].key.equals(key)) {
+            return false;
+        }
         table[position] = new MapEntry<>(key, value);
         count++;
         modCount++;
@@ -40,7 +40,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
     }
 
     private int hash(int hashCode) {
-        return hashCode / table.length;
+        return (hashCode == 0) ? 0 : hashCode ^ (hashCode >>> 16);
     }
 
     private int indexFor(int hash) {
@@ -64,9 +64,12 @@ public class SimpleMap<K, V> implements Map<K, V> {
     @Override
     public V get(K key) {
         V rsl = null;
-        for (MapEntry<K, V> el : table) {
-            if (el != null && Objects.equals(el.key, key)) {
-                rsl = el.value;
+        if (key == null && table[0] != null) {
+            rsl = table[0].value;
+        } else if (key != null) {
+            int position = indexFor(hash(key.hashCode()));
+            if (table[position] != null && table[position].key.equals(key)) {
+                rsl = table[position].value;
             }
         }
         return rsl;
@@ -82,10 +85,13 @@ public class SimpleMap<K, V> implements Map<K, V> {
         }
         int hash = hash(key.hashCode());
         int position = indexFor(hash);
-        table[position] = null;
-        count--;
-        modCount++;
-        return true;
+        if (table[position].key.equals(key)) {
+            table[position] = null;
+            count--;
+            modCount++;
+            return true;
+        }
+        return false;
     }
 
     @Override
