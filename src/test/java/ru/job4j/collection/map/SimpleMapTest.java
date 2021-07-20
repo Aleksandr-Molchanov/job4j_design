@@ -4,7 +4,6 @@ import org.junit.Test;
 
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
@@ -66,12 +65,6 @@ public class SimpleMapTest {
         assertThat(map.get(null), is(1));
         assertTrue(map.remove(null));
         assertNull(map.get(null));
-    }
-
-    @Test(expected = NoSuchElementException.class)
-    public void whenGetEmptyFromIt() {
-        Map<String, Integer> map = new SimpleMap<>();
-        map.iterator().next();
     }
 
     @Test(expected = ConcurrentModificationException.class)
