@@ -34,13 +34,7 @@ public class Config {
     }
 
     public String value(String key) {
-        String rsl = null;
-        for (String k : values.keySet()) {
-            if (k.equals(key)) {
-                rsl = values.get(k);
-            }
-        }
-        return rsl;
+        return values.get(key);
     }
 
     @Override
