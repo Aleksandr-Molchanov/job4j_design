@@ -9,9 +9,9 @@ public class Analizy {
                 new BufferedOutputStream(
                         new FileOutputStream(target)
                 ))) {
+            boolean trigger = true;
             for (String str = read.readLine(); str != null; str = read.readLine()) {
-                boolean trigger = true;
-                if (str.startsWith("400") || str.startsWith("500")) {
+                if (trigger && str.startsWith("400") || str.startsWith("500")) {
                     String[] logStart = str.split(" ");
                     out.write(logStart[1]);
                     out.print(";");
@@ -21,6 +21,7 @@ public class Analizy {
                     String[] logStop = str.split(" ");
                     out.write(logStop[1]);
                     out.println(";");
+                    trigger = true;
                 }
             }
         } catch (Exception e) {
