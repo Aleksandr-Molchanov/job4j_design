@@ -16,11 +16,11 @@ public class ArgsName {
             throw new IllegalArgumentException("Invalid arguments");
         }
         for (String arg : args) {
-            String[] keyVal = arg.split("=");
+            String[] keyVal = arg.substring(1).split("=");
             if (keyVal.length != 2) {
                 throw new IllegalArgumentException("Invalid arguments");
             }
-            values.put(keyVal[0].substring(1), keyVal[1]);
+            values.put(keyVal[0], keyVal[1]);
         }
     }
 
