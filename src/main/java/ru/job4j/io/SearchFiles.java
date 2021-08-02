@@ -12,7 +12,7 @@ import java.util.function.Predicate;
 import static java.nio.file.FileVisitResult.CONTINUE;
 
 public class SearchFiles implements FileVisitor<Path> {
-    private ArrayList<Path> files;
+    private final ArrayList<Path> files = new ArrayList<>();
     Predicate<Path> condition;
 
     public SearchFiles(Predicate<Path> condition) {
