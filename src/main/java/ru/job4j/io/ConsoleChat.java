@@ -18,7 +18,6 @@ public class ConsoleChat {
         this.botAnswers = botAnswers;
     }
 
-    @SuppressWarnings("checkstyle:InnerAssignment")
     public void run() {
         List<String> answers = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(botAnswers));
