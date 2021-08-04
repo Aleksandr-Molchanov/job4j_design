@@ -2,6 +2,7 @@ package ru.job4j.io;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -42,6 +43,7 @@ public class ConsoleChat {
 
     public void run() {
         List<String> log = new ArrayList<>();
+        List<String> ans = readPhrases();
         try (BufferedReader read = new BufferedReader(new InputStreamReader(System.in))
         ) {
             String s;
@@ -57,7 +59,7 @@ public class ConsoleChat {
                     continue;
                 }
                 if (flag) {
-                    out = "Бот: " + readPhrases().get(new Random().nextInt(readPhrases().size()));
+                    out = "Бот: " + ans.get(new Random().nextInt(readPhrases().size()));
                     log.add("Пользователь: " + s);
                     log.add(out);
                     System.out.println(out);
