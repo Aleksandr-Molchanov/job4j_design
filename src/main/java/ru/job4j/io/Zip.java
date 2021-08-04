@@ -20,7 +20,6 @@ public class Zip {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public static void packSingleFile(File source, File target) {
