@@ -1,16 +1,36 @@
 package ru.job4j.io;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class CSVReader {
 
-    public static List<String> readFile(File path) {
+    public static List<String> filter(File path, String delimiter, String filter) {
         List<String> file = new ArrayList<>();
+        List<Integer> indexes = new ArrayList<>();
+        boolean flag = true;
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-            for (String str = br.readLine(); str != null; str = br.readLine()) {
-                file.add(str);
+            for (String str = br.readLine(); str != null && !str.isEmpty(); str = br.readLine()) {
+                if (flag) {
+                    String[] header = str.split(delimiter);
+                    String[] column = filter.split(",");
+                    Set<String> columns = new HashSet<>(Arrays.asList(column));
+                    int num = 0;
+                    for (String s : header) {
+                        if (columns.contains(s)) {
+                            indexes.add(num);
+                        }
+                        num++;
+                    }
+                    flag = false;
+                }
+                String[] subStr = str.split(delimiter);
+                StringBuilder strResult = new StringBuilder();
+                for (Integer i : indexes) {
+                    strResult.append(subStr[i]).append(delimiter);
+                }
+                strResult.deleteCharAt(strResult.length() - 1);
+                file.add(strResult.toString());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -29,46 +49,18 @@ public class CSVReader {
         }
     }
 
-    public static List<String> filter(List<String> file, String delimiter, String filter) {
-        List<String> rsl = new ArrayList<>();
-        String[] header = file.get(0).split(delimiter);
-        String[] column = filter.split(",");
-        List<Integer> indexes = new ArrayList<>();
-        int count = 0;
-        for (String s : header) {
-            for (String col : column) {
-                if (s.equals(col)) {
-                    indexes.add(count);
-                }
-                count++;
-            }
-            count = 0;
-        }
-        for (String str : file) {
-            String[] subStr = str.split(delimiter);
-            StringBuilder strResult = new StringBuilder();
-            for (Integer i : indexes) {
-                strResult.append(subStr[i]).append(delimiter);
-            }
-            strResult.deleteCharAt(strResult.length() - 1);
-            rsl.add(strResult.toString());
-        }
-        return rsl;
-    }
-
     public static void main(String[] args) {
         if (args.length != 4) {
             throw new IllegalArgumentException("Invalid arguments");
         }
         ArgsName param = ArgsName.of(args);
-        List<String> in = readFile(new File(param.get("path")));
-        List<String> out = filter(in, param.get("delimiter"), param.get("filter"));
+        List<String> filteredIn = filter(new File(param.get("path")), param.get("delimiter"), param.get("filter"));
         if (param.get("out").equals("stdout")) {
-            for (String s : out) {
+            for (String s : filteredIn) {
                 System.out.println(s);
             }
         } else {
-            writeFile(out, new File(param.get("out")));
+            writeFile(filteredIn, new File(param.get("out")));
         }
     }
 }
