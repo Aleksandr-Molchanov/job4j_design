@@ -59,7 +59,7 @@ public class ConsoleChat {
                     continue;
                 }
                 if (flag) {
-                    out = "Бот: " + ans.get(new Random().nextInt(readPhrases().size()));
+                    out = "Бот: " + ans.get(new Random().nextInt(ans.size()));
                     log.add("Пользователь: " + s);
                     log.add(out);
                     System.out.println(out);
