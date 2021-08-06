@@ -45,7 +45,7 @@ public class Telephone {
         /* Модифицируем json-строку */
         final String personJson =
                 "{"
-                        + "\"onMarker\":true,"
+                        + "\"onMarket\":true,"
                         + "\"price\":999,"
                         + "\"manufacturer\":"
                             + "{"
