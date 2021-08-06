@@ -1,8 +1,7 @@
-package ru.job4j.serialization;
+package ru.job4j.serialization.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import ru.job4j.serialization.json.Manufacturer;
 
 import java.util.Arrays;
 

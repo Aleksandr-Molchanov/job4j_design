@@ -1,0 +1,8 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+<telephone onMarket="true" price="999">
+    <manufacturer companyName="name" address="address" phone="+7(999)999-99-99"/>
+    <parameters>
+        <parameter>black</parameter>
+        <parameter>touch</parameter>
+    </parameters>
+</telephone>
