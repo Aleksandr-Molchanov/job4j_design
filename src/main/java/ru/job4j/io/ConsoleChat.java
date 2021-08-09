@@ -1,6 +1,11 @@
 package ru.job4j.io;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -19,7 +24,9 @@ public class ConsoleChat {
 
     public List<String> readPhrases() {
         List<String> answers = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(botAnswers))) {
+        try (BufferedReader br = new BufferedReader(
+                new FileReader(botAnswers)
+        )) {
             for (String str = br.readLine(); str != null; str = br.readLine()) {
                 answers.add(str);
             }
@@ -43,8 +50,9 @@ public class ConsoleChat {
     public void run() {
         List<String> log = new ArrayList<>();
         List<String> ans = readPhrases();
-        try (BufferedReader read = new BufferedReader(new InputStreamReader(System.in))
-        ) {
+        try (BufferedReader read = new BufferedReader(
+                new InputStreamReader(System.in)
+        )) {
             String s;
             String out;
             boolean flag = true;

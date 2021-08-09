@@ -1,6 +1,11 @@
 package ru.job4j.io;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -10,10 +15,14 @@ import java.util.zip.ZipOutputStream;
 public class Zip {
 
     public static void packFiles(List<Path> sources, File target) {
-        try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(String.valueOf(target))))) {
+        try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(
+                new FileOutputStream(String.valueOf(target))
+        ))) {
             for (Path f : sources) {
                 zip.putNextEntry(new ZipEntry(f.toFile().getPath()));
-                try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(String.valueOf(f)))) {
+                try (BufferedInputStream out = new BufferedInputStream(
+                        new FileInputStream(String.valueOf(f))
+                )) {
                     zip.write(out.readAllBytes());
                 }
             }
@@ -23,9 +32,13 @@ public class Zip {
     }
 
     public static void packSingleFile(File source, File target) {
-        try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(String.valueOf(target))))) {
+        try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(
+                new FileOutputStream(String.valueOf(target))
+        ))) {
             zip.putNextEntry(new ZipEntry(source.getPath()));
-            try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(String.valueOf(source)))) {
+            try (BufferedInputStream out = new BufferedInputStream(
+                    new FileInputStream(String.valueOf(source))
+            )) {
                 zip.write(out.readAllBytes());
             }
         } catch (Exception e) {
