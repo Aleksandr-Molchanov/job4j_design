@@ -8,22 +8,19 @@ public class CSVReader {
     public static List<String> filter(File path, String delimiter, String filter) {
         List<String> file = new ArrayList<>();
         List<Integer> indexes = new ArrayList<>();
-        boolean flag = true;
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-            for (String str = br.readLine(); str != null && !str.isEmpty(); str = br.readLine()) {
-                if (flag) {
-                    String[] header = str.split(delimiter);
-                    String[] column = filter.split(",");
-                    Set<String> columns = new HashSet<>(Arrays.asList(column));
-                    int num = 0;
-                    for (String s : header) {
-                        if (columns.contains(s)) {
-                            indexes.add(num);
-                        }
-                        num++;
-                    }
-                    flag = false;
+            String str = br.readLine();
+            String[] header = str.split(delimiter);
+            String[] column = filter.split(",");
+            Set<String> columns = new HashSet<>(Arrays.asList(column));
+            int num = 0;
+            for (String s : header) {
+                if (columns.contains(s)) {
+                    indexes.add(num);
                 }
+                num++;
+            }
+            for (str = br.readLine(); str != null && !str.isEmpty(); str = br.readLine()) {
                 String[] subStr = str.split(delimiter);
                 StringBuilder strResult = new StringBuilder();
                 for (Integer i : indexes) {
