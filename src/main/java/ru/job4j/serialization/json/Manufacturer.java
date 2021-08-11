@@ -2,11 +2,11 @@ package ru.job4j.serialization.json;
 
 public class Manufacturer {
 
-    private final String companyName;
+    private String companyName;
 
-    private final String address;
+    private String address;
 
-    private final String phone;
+    private String phone;
 
     public Manufacturer(String companyName, String address, String phone) {
         this.companyName = companyName;
@@ -21,5 +21,29 @@ public class Manufacturer {
                 + ", address='" + address + '\''
                 + ", phone='" + phone + '\''
                 + '}';
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
