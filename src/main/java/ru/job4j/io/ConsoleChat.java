@@ -53,10 +53,10 @@ public class ConsoleChat {
         try (BufferedReader read = new BufferedReader(
                 new InputStreamReader(System.in)
         )) {
-            String s;
+            String s = read.readLine();
             String out;
             boolean flag = true;
-            while ((s = read.readLine()) != null && !s.equals(OUT)) {
+            while (s != null && !s.equals(OUT)) {Y
                 if (s.equals(STOP)) {
                     flag = false;
                     continue;
