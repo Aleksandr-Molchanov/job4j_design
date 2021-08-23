@@ -56,7 +56,7 @@ public class ConsoleChat {
             String s = read.readLine();
             String out;
             boolean flag = true;
-            while (s != null && !s.equals(OUT)) {Y
+            while (s != null && !s.equals(OUT)) {
                 if (s.equals(STOP)) {
                     flag = false;
                     continue;
