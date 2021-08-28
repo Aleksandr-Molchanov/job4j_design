@@ -26,14 +26,15 @@ public class Searcher {
     public static List<Path> finder(ArgsName param) throws IOException {
         List<Path> rsl;
         Path start = Paths.get(param.get("d"));
-        switch (param.get("t")) {
-            case "mask" -> rsl = Search.search(start, p -> p.toFile().getName().endsWith(param.get("n")));
-            case "name" -> rsl = Search.search(start, p -> p.toFile().getName().equals(param.get("n")));
-            case "regex" -> {
-                Pattern pattern = Pattern.compile(param.get("n"));
-                rsl = Search.search(start, p -> pattern.matcher(p.toFile().getName()).find());
-            }
-            default -> throw new IllegalArgumentException("Ошибка параметра поиска");
+        if (param.get("t").equals("mask")) {
+            rsl = Search.search(start, p -> p.toFile().getName().endsWith(param.get("n")));
+        } else if (param.get("t").equals("name")) {
+            rsl = Search.search(start, p -> p.toFile().getName().equals(param.get("n")));
+        } else if (param.get("t").equals("regex")) {
+            Pattern pattern = Pattern.compile(param.get("n"));
+            rsl = Search.search(start, p -> pattern.matcher(p.toFile().getName()).find());
+        } else {
+            throw new IllegalArgumentException("Ошибка параметра поиска");
         }
         return rsl;
     }
