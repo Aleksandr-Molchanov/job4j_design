@@ -19,18 +19,23 @@ public class Searcher {
             throw new IllegalArgumentException("Ошибка параметров запуска");
         }
         ArgsName param = ArgsName.of(args);
-        List<Path> paths;
+        List<Path> paths = finder(param);
+        writeFile(paths, new File(param.get("o")));
+    }
+
+    public static List<Path> finder(ArgsName param) throws IOException {
+        List<Path> rsl;
         Path start = Paths.get(param.get("d"));
         switch (param.get("t")) {
-            case "mask" -> paths = Search.search(start, p -> p.toFile().getName().endsWith(param.get("n")));
-            case "name" -> paths = Search.search(start, p -> p.toFile().getName().equals(param.get("n")));
+            case "mask" -> rsl = Search.search(start, p -> p.toFile().getName().endsWith(param.get("n")));
+            case "name" -> rsl = Search.search(start, p -> p.toFile().getName().equals(param.get("n")));
             case "regex" -> {
                 Pattern pattern = Pattern.compile(param.get("n"));
-                paths = Search.search(start, p -> pattern.matcher(p.toFile().getName()).find());
+                rsl = Search.search(start, p -> pattern.matcher(p.toFile().getName()).find());
             }
             default -> throw new IllegalArgumentException("Ошибка параметра поиска");
         }
-        writeFile(paths, new File(param.get("o")));
+        return rsl;
     }
 
     public static void writeFile(List<Path> file, File out) {
