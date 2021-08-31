@@ -11,9 +11,9 @@ create table people(
 
 insert into sex(name) values ('men');
 insert into sex(name) values ('women');
-insert into people(name, position_id) VALUES ('Ivan', 1);
-insert into people(name, position_id) VALUES ('Olya', 2);
-insert into people(name, position_id) VALUES ('Vika', 2);
+insert into people(name, sex_id) VALUES ('Ivan', 1);
+insert into people(name, sex_id) VALUES ('Olya', 2);
+insert into people(name, sex_id) VALUES ('Vika', 2);
 
 select * from people;
 
