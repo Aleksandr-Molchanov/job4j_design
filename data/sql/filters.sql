@@ -20,7 +20,9 @@ values ('Сыр Моцарелла', 1, date '08-Jan-2021', 500.00),
 ('Мороженое 48 копеек', 3, date '08-Jan-2022', 60.00),
 ('Мороженое Золотой слиток', 3, date '08-Jan-2022', 60.00);
 
-select * from product where type_id = 1;
+select * from product as p
+join type t on p.type_id = t.id
+where t.name = 'Сыр';
 
 select * from product where name like '%Мороженое%';
 
@@ -33,9 +35,8 @@ join type t on p.type_id = t.id
 group by t.name;
 
 select p.name, t.name, p.expired_date, p.price from product as p
-join type t on p.type_id = t.id 
-group by p.name, t.name, p.expired_date, p.price
-having t.name = 'Сыр' or t.name = 'Молоко';
+join type t on p.type_id = t.id
+where t.name = 'Сыр' or t.name = 'Молоко';
 
 select t.name from product as p
 join type t on p.type_id = t.id
