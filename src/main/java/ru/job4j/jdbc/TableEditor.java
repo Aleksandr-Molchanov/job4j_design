@@ -1,7 +1,7 @@
 package ru.job4j.jdbc;
 
-import ru.job4j.io.Config;
-
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
 import java.util.StringJoiner;
@@ -20,16 +20,12 @@ public class TableEditor implements AutoCloseable {
     private void initConnection() {
         try {
             Class.forName("org.postgresql.Driver");
-            Config config = new Config(
-                    "C:\\projects\\job4j_design\\src\\main\\java\\ru\\job4j\\jdbc\\app.properties"
-            );
-            config.load();
-            connection = DriverManager.getConnection(
-                    config.value("url"),
-                    config.value("login"),
-                    config.value("password")
-            );
-        } catch (ClassNotFoundException | SQLException e) {
+            properties.load(new FileInputStream("app.properties"));
+            String url = properties.getProperty("url");
+            String login = properties.getProperty("username");
+            String password = properties.getProperty("password");
+            connection = DriverManager.getConnection(url, login, password);
+        } catch (IOException | ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }
@@ -44,15 +40,17 @@ public class TableEditor implements AutoCloseable {
 
     public void createTable(String tableName) {
         String sql = String.format(
-                "create table if not exists table %s;",
-                tableName
+                "create table if not exists %s(%s, %s);",
+                tableName,
+                "id serial primary key",
+                "name varchar(255)"
         );
         statementExecute(sql);
     }
 
     public void dropTable(String tableName) {
         String sql = String.format(
-                "delete table if exists table %s;",
+                "drop table %s;",
                 tableName
         );
         statementExecute(sql);
@@ -60,29 +58,29 @@ public class TableEditor implements AutoCloseable {
 
     public void addColumn(String tableName, String columnName, String type) {
         String sql = String.format(
-                "add column(name %s, type %s) in table %s;",
+                "alter table %s add column %s %s;",
+                tableName,
                 columnName,
-                type,
-                tableName
+                type
         );
         statementExecute(sql);
     }
 
     public void dropColumn(String tableName, String columnName) {
         String sql = String.format(
-                "delete column %s in table %s;",
-                columnName,
-                tableName
+                "alter table %s drop column %s;",
+                tableName,
+                columnName
         );
         statementExecute(sql);
     }
 
     public void renameColumn(String tableName, String columnName, String newColumnName) {
         String sql = String.format(
-                "rename column %s to %s in table(%s);",
+                "alter table %s rename column %s to %s;",
+                tableName,
                 columnName,
-                newColumnName,
-                tableName
+                newColumnName
         );
         statementExecute(sql);
     }
