@@ -1,6 +1,8 @@
 package ru.job4j.jdbc;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
@@ -18,9 +20,9 @@ public class TableEditor implements AutoCloseable {
     }
 
     private void initConnection() {
-        try {
+        try (FileInputStream in = new FileInputStream("app.properties")) {
             Class.forName("org.postgresql.Driver");
-            properties.load(new FileInputStream("app.properties"));
+            properties.load(in);
             String url = properties.getProperty("url");
             String login = properties.getProperty("username");
             String password = properties.getProperty("password");
