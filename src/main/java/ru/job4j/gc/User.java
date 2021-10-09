@@ -50,7 +50,6 @@ public class User {
         for (int i = 0; i < 10000; i++) {
             new User("user" + i, "N" + i);
         }
-        //System.gc();
         info();
     }
 }
