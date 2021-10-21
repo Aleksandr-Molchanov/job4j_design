@@ -1,13 +1,12 @@
 package ru.job4j.ood.lsp.storage;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class Shop implements Storage {
+public class Shop implements Strategy {
 
-    private List<Food> shop = new ArrayList<>();
+    private List<Food> shop;
 
-    private InterestCalculator interestCalculator = new InterestCalculator();
+    private InterestCalculator interestCalculator;
 
     @Override
     public boolean add(Food food) {
