@@ -3,11 +3,11 @@ package ru.job4j.ood.lsp.storage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Warehouse implements Strategy {
+public class Warehouse implements Storage {
 
     private List<Food> warehouse = new ArrayList<>();
 
-    private InterestCalculator interestCalculator;
+    private InterestCalculator interestCalculator = new InterestCalculator();
 
     @Override
     public boolean add(Food food) {
