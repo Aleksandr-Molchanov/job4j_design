@@ -6,8 +6,11 @@ public class Truck implements Transport {
 
     private String carNumber;
 
-    public Truck(String carNumber) {
+    private int size;
+
+    public Truck(String carNumber, int size) {
         this.carNumber = carNumber;
+        this.size = size;
     }
 
     public String getCarNumber() {
@@ -18,9 +21,17 @@ public class Truck implements Transport {
         this.carNumber = carNumber;
     }
 
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override

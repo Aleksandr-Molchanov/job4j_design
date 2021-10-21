@@ -20,7 +20,7 @@ public class Car implements Transport {
 
     @Override
     public int size() {
-        return 0;
+        return 1;
     }
 
     @Override
