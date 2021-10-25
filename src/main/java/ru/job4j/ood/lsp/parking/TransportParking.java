@@ -22,11 +22,11 @@ public class TransportParking implements Parking {
             throw new IllegalArgumentException("Размер транспорта не может быть меньше 1.");
         }
         if (transport.size() > 1 && truck < trucks.length) {
-            trucks[car] = transport;
+            trucks[truck] = transport;
             truck++;
             rsl = true;
         }
-        if (transport.size() > 1 && truck == trucks.length
+        if (!rsl && transport.size() > 1 && truck == trucks.length
                 && cars.length - car >= transport.size()) {
             cars[car] = transport;
             car += transport.size();
