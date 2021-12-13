@@ -2,11 +2,12 @@ package ru.job4j.ood.isp.menu;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class PrintItem implements Print {
+public class Menu implements Print, Action {
 
-    private List<Item> menu = new ArrayList<>();
+    private Action action;
+
+    private List<Item> list = new ArrayList<>();
 
     @Override
     public void print(Item item, String line) {
@@ -20,7 +21,6 @@ public class PrintItem implements Print {
                 }
             }
         }
-
     }
 
     public void printByName(String name) {
@@ -29,7 +29,7 @@ public class PrintItem implements Print {
 
     public Item findByName(String name) {
         Item rsl = null;
-        for (Item it : menu) {
+        for (Item it : list) {
             if (it.getName().equals(name)) {
                 rsl = it;
                 break;
@@ -43,34 +43,29 @@ public class PrintItem implements Print {
         return "----";
     }
 
-    public void add(Item item) {
-        if (item != null) {
-            menu.add(item);
-        }
-        List<Item> list = Objects.requireNonNull(item).getChildren();
-        if (list != null) {
-            for (Item it: item.getChildren()) {
-                add(it);
+
+    @Override
+    public void act() {
+
+    }
+
+    public void add(String parentName, String childName, Action action) {
+        for (Item it : list) {
+            if (it.getName().equals(parentName)) {
+                it.getChildren().add(new Item(childName, null));
             }
         }
     }
 
     public static void main(String[] args) {
-        PrintItem menu = new PrintItem();
-        Item item = new Item("Задачи:", List.of(
-                new Item("Задача 1.", List.of(
-                        new Item("Задача 1.1.")
-                )),
-                new Item("Задача 2.", List.of(
-                        new Item("Задача 2.1.", List.of(
-                                new Item("Задача 2.1.1")
-                        )),
-                        new Item("Задача 2.2."))
-                )
-        ));
-        menu.add(item);
+        Menu menu = new Menu();
+        Item item = new Item("Задачa 1.");
+        menu.list.add(item);
+        menu.add("Задачa 1.", "Задачa 1.1.", null);
+        menu.add("Задачa 1.", "Задачa 1.2.", null);
+        menu.add("Задачa 1.2.", "Задачa 1.2.2.", null);
         menu.print(item, menu.printLine());
         System.out.println();
-        menu.printByName("Задача 2.1.");
+        System.out.println(menu.list.toString());
     }
 }
