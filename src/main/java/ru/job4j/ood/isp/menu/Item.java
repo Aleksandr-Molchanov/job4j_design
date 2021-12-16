@@ -9,13 +9,12 @@ public class Item {
 
     private List<Item> children;
 
-    public Item(String name) {
-        this.name = name;
-    }
+    private Action action;
 
-    public Item(String name, List<Item> children) {
+    public Item(String name, List<Item> children, Action action) {
         this.name = name;
         this.children = children;
+        this.action = action;
     }
 
     public String getName() {
@@ -34,6 +33,14 @@ public class Item {
         this.children = children;
     }
 
+    public Action getAction() {
+        return action;
+    }
+
+    public void setAction(Action action) {
+        this.action = action;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -44,19 +51,12 @@ public class Item {
         }
         Item item = (Item) o;
         return Objects.equals(name, item.name)
-                && Objects.equals(children, item.children);
+                && Objects.equals(children, item.children)
+                && Objects.equals(action, item.action);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, children);
-    }
-
-    @Override
-    public String toString() {
-        return "Item{"
-                + ", name='" + name + '\''
-                + ", children=" + children
-                + '}';
+        return Objects.hash(name, children, action);
     }
 }

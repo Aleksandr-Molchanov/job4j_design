@@ -3,9 +3,7 @@ package ru.job4j.ood.isp.menu;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Menu implements Print, Action {
-
-    private Action action;
+public class Menu implements Print {
 
     private List<Item> list = new ArrayList<>();
 
@@ -23,15 +21,11 @@ public class Menu implements Print, Action {
         }
     }
 
-    public void printByName(String name) {
-        print(findByName(name), printLine());
-    }
-
-    public Item findByName(String name) {
-        Item rsl = null;
+    public Action findByName(String name) {
+        Action rsl = null;
         for (Item it : list) {
             if (it.getName().equals(name)) {
-                rsl = it;
+                rsl = it.getAction();
                 break;
             }
         }
@@ -43,29 +37,29 @@ public class Menu implements Print, Action {
         return "----";
     }
 
-
-    @Override
-    public void act() {
-
-    }
-
     public void add(String parentName, String childName, Action action) {
         for (Item it : list) {
             if (it.getName().equals(parentName)) {
-                it.getChildren().add(new Item(childName, null));
+                it.getChildren().add(new Item(childName, new ArrayList<Item>(), action));
+            } else if (it.getChildren().size() > 0) {
+                for (Item child : it.getChildren()) {
+                    if (child.getName().equals(parentName)) {
+                        child.getChildren().add(new Item(childName, new ArrayList<Item>(), action));
+                    }
+                }
             }
         }
     }
 
     public static void main(String[] args) {
         Menu menu = new Menu();
-        Item item = new Item("Задачa 1.");
+        Item item = new Item("Задачa 1.", new ArrayList<>(), null);
         menu.list.add(item);
         menu.add("Задачa 1.", "Задачa 1.1.", null);
         menu.add("Задачa 1.", "Задачa 1.2.", null);
-        menu.add("Задачa 1.2.", "Задачa 1.2.2.", null);
+        menu.add("Задачa 1.1.", "Задачa 1.1.1.", null);
+        menu.add("Задачa 1.1.", "Задачa 1.1.2.", null);
+        menu.add("Задачa 1.2.", "Задачa 1.2.1.", null);
         menu.print(item, menu.printLine());
-        System.out.println();
-        System.out.println(menu.list.toString());
     }
 }
