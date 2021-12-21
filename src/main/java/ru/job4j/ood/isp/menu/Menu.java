@@ -1,11 +1,14 @@
 package ru.job4j.ood.isp.menu;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Menu implements Print {
 
-    private List<Item> list = new ArrayList<>();
+    private Item root;
+
+    public Menu(Item item) {
+        this.root = item;
+    }
 
     @Override
     public void print(Item item, String line) {
@@ -21,15 +24,19 @@ public class Menu implements Print {
         }
     }
 
-    public Action findByName(String name) {
-        Action rsl = null;
-        for (Item it : list) {
-            if (it.getName().equals(name)) {
-                rsl = it.getAction();
+    public Optional<Item> findByName(String name) {
+        Optional<Item> found = Optional.empty();
+        Queue<Item> queue = new LinkedList<>();
+        queue.offer(this.root);
+        while (!queue.isEmpty()) {
+            Item el = queue.poll();
+            if (Objects.equals(el.getName(), name)) {
+                found = Optional.of(el);
                 break;
             }
+            queue.addAll(el.getChildren());
         }
-        return rsl;
+        return found;
     }
 
     @Override
@@ -38,28 +45,25 @@ public class Menu implements Print {
     }
 
     public void add(String parentName, String childName, Action action) {
-        for (Item it : list) {
-            if (it.getName().equals(parentName)) {
-                it.getChildren().add(new Item(childName, new ArrayList<Item>(), action));
-            } else if (it.getChildren().size() > 0) {
-                for (Item child : it.getChildren()) {
-                    if (child.getName().equals(parentName)) {
-                        child.getChildren().add(new Item(childName, new ArrayList<Item>(), action));
-                    }
-                }
+        Optional<Item> findPar = findByName(parentName);
+        if (findPar.isPresent()) {
+            Optional<Item> findChild = findByName(childName);
+            if (findChild.isEmpty()) {
+                Item newChild = new Item(childName, new ArrayList<>(), action);
+                findPar.get().getChildren().add(newChild);
             }
         }
     }
 
     public static void main(String[] args) {
-        Menu menu = new Menu();
-        Item item = new Item("Задачa 1.", new ArrayList<>(), null);
-        menu.list.add(item);
-        menu.add("Задачa 1.", "Задачa 1.1.", null);
-        menu.add("Задачa 1.", "Задачa 1.2.", null);
-        menu.add("Задачa 1.1.", "Задачa 1.1.1.", null);
-        menu.add("Задачa 1.1.", "Задачa 1.1.2.", null);
-        menu.add("Задачa 1.2.", "Задачa 1.2.1.", null);
-        menu.print(item, menu.printLine());
+        Item root = new Item("Задачa 1.", new ArrayList<>(), new MyAction());
+        Menu menu = new Menu(root);
+        menu.add("Задачa 1.", "Задачa 1.1.", new MyAction());
+        menu.add("Задачa 1.", "Задачa 1.2.", new MyAction());
+        menu.add("Задачa 1.1.", "Задачa 1.1.1.", new MyAction());
+        menu.add("Задачa 1.1.", "Задачa 1.1.2.", new MyAction());
+        menu.add("Задачa 1.2.", "Задачa 1.2.1.", new MyAction());
+        menu.add("Задачa 1.1.1.", "Задачa 1.1.1.1.", new MyAction());
+        menu.print(root, menu.printLine());
     }
 }

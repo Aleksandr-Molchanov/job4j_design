@@ -59,4 +59,13 @@ public class Item {
     public int hashCode() {
         return Objects.hash(name, children, action);
     }
+
+    @Override
+    public String toString() {
+        return "Item{"
+                + "name='" + name + '\''
+                + ", children=" + children
+                + ", action=" + action
+                + '}';
+    }
 }
