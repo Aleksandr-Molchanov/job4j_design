@@ -27,4 +27,14 @@ public class Shop implements Storage {
         }
         return rsl;
     }
+
+    @Override
+    public void remove() {
+        shop.clear();
+    }
+
+    @Override
+    public List<Food> getList() {
+        return shop;
+    }
 }

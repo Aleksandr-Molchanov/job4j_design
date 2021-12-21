@@ -22,4 +22,14 @@ public class Trash implements Storage {
         }
         return rsl;
     }
+
+    @Override
+    public void remove() {
+        trash.clear();
+    }
+
+    @Override
+    public List<Food> getList() {
+        return trash;
+    }
 }

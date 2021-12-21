@@ -22,4 +22,14 @@ public class Warehouse implements Storage {
         }
         return rsl;
     }
+
+    @Override
+    public void remove() {
+        warehouse.clear();
+    }
+
+    @Override
+    public List<Food> getList() {
+        return warehouse;
+    }
 }

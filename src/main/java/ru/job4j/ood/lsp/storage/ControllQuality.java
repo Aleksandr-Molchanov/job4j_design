@@ -6,7 +6,7 @@ import java.util.List;
 
 public class ControllQuality {
 
-    private List<Storage> storages = new ArrayList<>();
+    private List<Storage> storages;
 
     public ControllQuality(List<Storage> storage) {
         this.storages = storage;
@@ -23,6 +23,24 @@ public class ControllQuality {
         return rsl;
     }
 
+    public void resort() {
+        List<Food> resortList = new ArrayList<>();
+        for (Storage storage : storages) {
+            resortList.addAll(storage.getList());
+            storage.remove();
+        }
+        for (Food f : resortList) {
+            distribute(f);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "ControllQuality{"
+                + "storages=" + storages
+                + '}';
+    }
+
     public static void main(String[] args) {
         Bread bread = new Bread("bread", new Date(), new Date(), 10.99, false);
         Eggs eggs = new Eggs("eggs", new Date(), new Date(), 10.99, false);
@@ -31,5 +49,8 @@ public class ControllQuality {
         control.distribute(bread);
         control.distribute(eggs);
         control.distribute(meat);
+        System.out.println(control);
+        control.resort();
+        System.out.println(control);
     }
 }
