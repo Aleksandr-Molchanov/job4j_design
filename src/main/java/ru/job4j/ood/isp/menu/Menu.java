@@ -4,37 +4,43 @@ import java.util.*;
 
 public class Menu implements Print {
 
-    private Item root;
+    private String name;
 
-    public Menu(Item item) {
-        this.root = item;
+    private List<Menu> children;
+
+    private Action action;
+
+    public Menu(String name, List<Menu> children, Action action) {
+        this.name = name;
+        this.children = children;
+        this.action = action;
     }
 
     @Override
-    public void print(Item item, String line) {
-        if (item != null) {
-            System.out.println(item.getName());
-            List<Item> list = item.getChildren();
-            if (list != null) {
-                for (Item it : list) {
-                    System.out.print(line);
-                    print(it, line + line);
-                }
+    public String print(String line) {
+        StringBuilder rsl = new StringBuilder();
+        rsl.append(name);
+        rsl.append(System.lineSeparator());
+        if (children != null) {
+            for (Menu m : children) {
+                rsl.append(line);
+                rsl.append(m.print(line + line));
             }
         }
+        return rsl.toString();
     }
 
-    public Optional<Item> findByName(String name) {
-        Optional<Item> found = Optional.empty();
-        Queue<Item> queue = new LinkedList<>();
-        queue.offer(this.root);
+    public Optional<Action> findByName(String name) {
+        Optional<Action> found = Optional.empty();
+        Queue<Menu> queue = new LinkedList<>();
+        queue.offer(this);
         while (!queue.isEmpty()) {
-            Item el = queue.poll();
-            if (Objects.equals(el.getName(), name)) {
-                found = Optional.of(el);
+            Menu el = queue.poll();
+            if (Objects.equals(el.name, name)) {
+                found = Optional.of(el.action);
                 break;
             }
-            queue.addAll(el.getChildren());
+            queue.addAll(el.children);
         }
         return found;
     }
@@ -45,25 +51,40 @@ public class Menu implements Print {
     }
 
     public void add(String parentName, String childName, Action action) {
-        Optional<Item> findPar = findByName(parentName);
-        if (findPar.isPresent()) {
-            Optional<Item> findChild = findByName(childName);
-            if (findChild.isEmpty()) {
-                Item newChild = new Item(childName, new ArrayList<>(), action);
-                findPar.get().getChildren().add(newChild);
+        if (parentName.equals(name)) {
+            children.add(new Menu(childName, new ArrayList<>(), action));
+        } else {
+            for (Menu m : children) {
+                m.add(parentName, childName, action);
             }
         }
     }
 
+    public Action select(String itemName) {
+        Action rsl = null;
+        if (name.equals(itemName)) {
+            rsl = action;
+        } else {
+            for (Menu it : children) {
+                rsl = it.select(itemName);
+                if (rsl != null) {
+                    break;
+                }
+            }
+        }
+        return rsl;
+    }
+
     public static void main(String[] args) {
-        Item root = new Item("Задачa 1.", new ArrayList<>(), new MyAction());
-        Menu menu = new Menu(root);
+        Menu menu = new Menu("Задачa 1.", new ArrayList<>(), new MyAction());
         menu.add("Задачa 1.", "Задачa 1.1.", new MyAction());
         menu.add("Задачa 1.", "Задачa 1.2.", new MyAction());
         menu.add("Задачa 1.1.", "Задачa 1.1.1.", new MyAction());
         menu.add("Задачa 1.1.", "Задачa 1.1.2.", new MyAction());
         menu.add("Задачa 1.2.", "Задачa 1.2.1.", new MyAction());
         menu.add("Задачa 1.1.1.", "Задачa 1.1.1.1.", new MyAction());
-        menu.print(root, menu.printLine());
+        System.out.println(menu.findByName("Задачa 1.1.2."));
+        System.out.println(menu.findByName("Задачa 1.1.1.1."));
+        System.out.println(menu.print(menu.printLine()));
     }
 }
